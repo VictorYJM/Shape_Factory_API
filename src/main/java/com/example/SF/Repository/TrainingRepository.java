@@ -9,7 +9,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 import java.util.UUID;
 
-public interface ITraining extends JpaRepository<Training, UUID> {
+public interface TrainingRepository extends JpaRepository<Training, UUID> {
     @Query(value = "SELECT * FROM V_TrainingOrder", nativeQuery = true)
     List<Training> getAll();
 
@@ -23,13 +23,13 @@ public interface ITraining extends JpaRepository<Training, UUID> {
     );
 
     @Modifying
-    @Query("UPDATE Training SET training_name = :name WHERE training_id = :id")
+    @Query("UPDATE Training SET trainingName = :name WHERE trainingId = :id")
     void update(
             @Param("id") UUID id,
             @Param("name") String name
     );
 
     @Modifying
-    @Query("DELETE Training WHERE training_id = :id")
+    @Query("DELETE Training WHERE trainingId = :id")
     void exclude(@Param("id") UUID id);
 }

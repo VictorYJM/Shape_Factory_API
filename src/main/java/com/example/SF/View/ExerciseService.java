@@ -3,7 +3,7 @@ package com.example.SF.View;
 import com.example.SF.ImageService;
 import com.example.SF.Model.Exercise;
 import com.example.SF.Model.Muscle;
-import com.example.SF.Repository.IExercise;
+import com.example.SF.Repository.ExerciseRepository;
 import io.micrometer.common.util.StringUtils;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,20 +15,20 @@ import java.util.Optional;
 
 @Service
 public class ExerciseService {
-    private final IExercise iExercise;
+    private final ExerciseRepository exerciseRepository;
     private final MuscleService muscleService;
     private final ImageService imageService;
 
     @Autowired
-    public ExerciseService(IExercise iExercise, MuscleService muscleService, ImageService imageService) {
-        this.iExercise = iExercise;
+    public ExerciseService(ExerciseRepository exerciseRepository, MuscleService muscleService, ImageService imageService) {
+        this.exerciseRepository = exerciseRepository;
         this.muscleService = muscleService;
         this.imageService = imageService;
     }
 
     public List<Exercise> getAll() {
         try {
-            return iExercise.getAll();
+            return exerciseRepository.getAll();
         }
 
         catch (Exception e) {
@@ -38,12 +38,12 @@ public class ExerciseService {
     }
 
     public Exercise getById(UUID id) {
-        return iExercise.findById(id).orElse(null);
+        return exerciseRepository.findById(id).orElse(null);
     }
 
     public List<Exercise> getByMuscle(UUID muscleId) {
         try {
-            return iExercise.getByMuscle(muscleId);
+            return exerciseRepository.getByMuscle(muscleId);
         }
 
         catch (Exception e) {
@@ -54,7 +54,7 @@ public class ExerciseService {
 
     public List<Exercise> getByImage(String image) {
         try{
-            return iExercise.getByImage(image);
+            return exerciseRepository.getByImage(image);
         }
 
         catch (Exception e){
@@ -67,11 +67,11 @@ public class ExerciseService {
     public Exercise add(String name, String image, String path, UUID muscleId) {
         try {
             Exercise exercise = new Exercise();
-            exercise.setExercise_name(name);
-            exercise.setExercise_path(path);
+            exercise.setExerciseName(name);
+            exercise.setExercisePath(path);
 
             if (StringUtils.isNotEmpty(image)) {
-                exercise.setExercise_image(image);
+                exercise.setExerciseImage(image);
             }
 
             Muscle muscle = muscleService.getById(muscleId);
@@ -80,9 +80,9 @@ public class ExerciseService {
                 return null;
             }
 
-            exercise.setExercise_muscle(muscle);
+            exercise.setExerciseMuscle(muscle);
 
-            return iExercise.save(exercise);
+            return exerciseRepository.save(exercise);
         }
 
         catch (Exception e) {
@@ -94,17 +94,17 @@ public class ExerciseService {
     @Transactional
     public void update(UUID id, String name, String image, String path, UUID muscleId) {
         try {
-            Optional<Exercise> optionalExercise = iExercise.findById(id);
+            Optional<Exercise> optionalExercise = exerciseRepository.findById(id);
             if (optionalExercise.isPresent()) {
                 Exercise exercise = optionalExercise.get();
-                String oldImageUrl = exercise.getExercise_image();
+                String oldImageUrl = exercise.getExerciseImage();
 
                 if (StringUtils.isEmpty(image)) {
                     image = oldImageUrl;
                 }
 
                 else {
-                    List<Exercise> exercisesWithOldImage = iExercise.getByImage(oldImageUrl);
+                    List<Exercise> exercisesWithOldImage = exerciseRepository.getByImage(oldImageUrl);
                     if (exercisesWithOldImage.size() == 1) {
                         imageService.deleteImageFromBucket(oldImageUrl);
                     }
@@ -112,7 +112,7 @@ public class ExerciseService {
 
                 Muscle muscle = muscleService.getById(muscleId);
                 if (muscle != null) {
-                    iExercise.update(id, name, image, path, muscle);
+                    exerciseRepository.update(id, name, image, path, muscle);
                 }
             }
 
@@ -129,17 +129,17 @@ public class ExerciseService {
     @Transactional
     public void exclude(UUID id) {
         try {
-            Optional<Exercise> optionalExercise = iExercise.findById(id);
+            Optional<Exercise> optionalExercise = exerciseRepository.findById(id);
             if (optionalExercise.isPresent()) {
                 Exercise exercise = optionalExercise.get();
-                String oldImageUrl = exercise.getExercise_image();
+                String oldImageUrl = exercise.getExerciseImage();
 
-                List<Exercise> exercisesWithOldImage = iExercise.getByImage(oldImageUrl);
+                List<Exercise> exercisesWithOldImage = exerciseRepository.getByImage(oldImageUrl);
                 if (exercisesWithOldImage.size() == 1) {
                     imageService.deleteImageFromBucket(oldImageUrl);
                 }
 
-                iExercise.deleteById(id);
+                exerciseRepository.deleteById(id);
             }
 
             else {

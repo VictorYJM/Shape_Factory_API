@@ -10,18 +10,18 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 import java.util.UUID;
 
-public interface IExercise extends JpaRepository<Exercise, UUID> {
+public interface ExerciseRepository extends JpaRepository<Exercise, UUID> {
     @Query(value = "SELECT * FROM V_ExerciseOrder", nativeQuery = true)
     List<Exercise> getAll();
 
     @Query(value = "SELECT * FROM SF.GET_Exercise(:muscle)", nativeQuery = true)
     List<Exercise> getByMuscle(@Param("muscle") UUID id);
 
-    @Query(value = "SELECT * FROM SF.Exercise WHERE exercise_image = :image", nativeQuery = true)
+    @Query(value = "SELECT * FROM SF.Exercise WHERE exerciseImage = :image", nativeQuery = true)
     List<Exercise> getByImage(@Param("image") String image);
 
     @Modifying
-    @Query("UPDATE Exercise SET exercise_name = :name, exercise_image = :image, exercise_path = :path, exercise_muscle = :muscle WHERE exercise_id = :id")
+    @Query("UPDATE Exercise SET exerciseName = :name, exerciseImage = :image, exercisePath = :path, exerciseMuscle = :muscle WHERE exerciseId = :id")
     void update(
             @Param("id") UUID id,
             @Param("name") String name,

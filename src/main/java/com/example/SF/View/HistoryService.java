@@ -3,7 +3,7 @@ package com.example.SF.View;
 import com.example.SF.Model.Client;
 import com.example.SF.Model.History;
 import com.example.SF.Model.Recipe;
-import com.example.SF.Repository.IHistory;
+import com.example.SF.Repository.HistoryRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,18 +14,18 @@ import java.util.UUID;
 
 @Service
 public class HistoryService {
-    private final IHistory iHistory;
+    private final HistoryRepository historyRepository;
     private final ClientService clientService;
 
     @Autowired
-    public HistoryService(IHistory iHistory, ClientService clientService) {
-        this.iHistory = iHistory;
+    public HistoryService(HistoryRepository historyRepository, ClientService clientService) {
+        this.historyRepository = historyRepository;
         this.clientService = clientService;
     }
 
     public List<History> getAll() {
         try {
-            return iHistory.findAll();
+            return historyRepository.findAll();
         }
 
         catch (Exception e) {
@@ -36,7 +36,7 @@ public class HistoryService {
 
     public List<History> getByClientNoDate(UUID clientId) {
         try {
-            return iHistory.getByClientNoDate(clientId);
+            return historyRepository.getByClientNoDate(clientId);
         }
 
         catch (Exception e) {
@@ -47,7 +47,7 @@ public class HistoryService {
 
     public List<History> getByClient(UUID clientId, LocalDate date) {
         try {
-            return iHistory.getByClient(clientId, date);
+            return historyRepository.getByClient(clientId, date);
         }
 
         catch (Exception e) {
@@ -68,14 +68,14 @@ public class HistoryService {
             for (Recipe recipe : recipes) {
                 if (recipe != null) {
                     History history = new History();
-                    history.setHistory_client(client);
-                    history.setHistory_exercise(recipe.getRecipe_exercise());
-                    history.setHistory_date(LocalDate.now());
-                    history.setHistory_weight(recipe.getRecipe_weight());
-                    history.setHistory_reps(recipe.getRecipe_reps());
-                    history.setHistory_sets(recipe.getRecipe_sets());
+                    history.setHistoryClient(client);
+                    history.setHistoryExercise(recipe.getRecipeExercise());
+                    history.setHistoryDate(LocalDate.now());
+                    history.setHistoryWeight(recipe.getRecipeWeight());
+                    history.setHistoryReps(recipe.getRecipeReps());
+                    history.setHistorySets(recipe.getRecipeSets());
 
-                    iHistory.save(history);
+                    historyRepository.save(history);
                 }
             }
         }
@@ -89,7 +89,7 @@ public class HistoryService {
     @Transactional
     public void exclude(UUID id) {
         try {
-            iHistory.deleteById(id);
+            historyRepository.deleteById(id);
         }
 
         catch (Exception e) {

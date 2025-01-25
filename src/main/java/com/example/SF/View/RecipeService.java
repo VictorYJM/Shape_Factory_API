@@ -3,7 +3,7 @@ package com.example.SF.View;
 import com.example.SF.Model.Recipe;
 import com.example.SF.Model.Training;
 import com.example.SF.Model.Exercise;
-import com.example.SF.Repository.IRecipe;
+import com.example.SF.Repository.RecipeRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,20 +14,20 @@ import java.util.UUID;
 
 @Service
 public class RecipeService {
-    private final IRecipe iRecipe;
+    private final RecipeRepository recipeRepository;
     private final TrainingService trainingService;
     private final ExerciseService exerciseService;
 
     @Autowired
-    public RecipeService(IRecipe iRecipe, TrainingService trainingService, ExerciseService exerciseService) {
-        this.iRecipe = iRecipe;
+    public RecipeService(RecipeRepository recipeRepository, TrainingService trainingService, ExerciseService exerciseService) {
+        this.recipeRepository = recipeRepository;
         this.trainingService = trainingService;
         this.exerciseService = exerciseService;
     }
 
     public List<Recipe> getAll() {
         try {
-            return iRecipe.findAll();
+            return recipeRepository.findAll();
         }
 
         catch (Exception e) {
@@ -36,12 +36,12 @@ public class RecipeService {
     }
 
     public Recipe getById(UUID id){
-        return iRecipe.findById(id).orElse(null);
+        return recipeRepository.findById(id).orElse(null);
     }
 
     public List<Recipe> getByTraining(UUID trainingId) {
         try {
-            return iRecipe.getByTraining(trainingId);
+            return recipeRepository.getByTraining(trainingId);
         }
 
         catch (Exception e) {
@@ -67,13 +67,13 @@ public class RecipeService {
                 return null;
             }
 
-            recipe.setRecipe_training(training);
-            recipe.setRecipe_exercise(exercise);
-            recipe.setRecipe_weight(weight);
-            recipe.setRecipe_reps(reps);
-            recipe.setRecipe_sets(sets);
+            recipe.setRecipeTraining(training);
+            recipe.setRecipeExercise(exercise);
+            recipe.setRecipeWeight(weight);
+            recipe.setRecipeReps(reps);
+            recipe.setRecipeSets(sets);
 
-            return iRecipe.save(recipe);
+            return recipeRepository.save(recipe);
         }
 
         catch (Exception e) {
@@ -91,23 +91,23 @@ public class RecipeService {
                 return;
             }
 
-            List<Recipe> recipes = iRecipe.getByTraining(trainingId);
+            List<Recipe> recipes = recipeRepository.getByTraining(trainingId);
             if (recipes.isEmpty()) {
                 System.out.println("Cannot find recipes by ID: " + trainingId);
                 return;
             }
 
-            Training copied = trainingService.add(training.getTraining_name(), training.getTraining_category(), clientId);
+            Training copied = trainingService.add(training.getTrainingName(), training.getTrainingCategory(), clientId);
 
             for (Recipe originalRecipe : recipes) {
                 Recipe newRecipe = new Recipe();
 
-                newRecipe.setRecipe_training(copied);
-                newRecipe.setRecipe_exercise(originalRecipe.getRecipe_exercise());
-                newRecipe.setRecipe_weight(originalRecipe.getRecipe_weight());
-                newRecipe.setRecipe_reps(originalRecipe.getRecipe_reps());
-                newRecipe.setRecipe_sets(originalRecipe.getRecipe_sets());
-                iRecipe.save(newRecipe);
+                newRecipe.setRecipeTraining(copied);
+                newRecipe.setRecipeExercise(originalRecipe.getRecipeExercise());
+                newRecipe.setRecipeWeight(originalRecipe.getRecipeWeight());
+                newRecipe.setRecipeReps(originalRecipe.getRecipeReps());
+                newRecipe.setRecipeSets(originalRecipe.getRecipeSets());
+                recipeRepository.save(newRecipe);
             }
             System.out.println("Recipes copied");
         }
@@ -120,11 +120,11 @@ public class RecipeService {
     @Transactional
     public void exclude(UUID training, List<Recipe> recipes) {
         try {
-            iRecipe.exclude(training);
+            recipeRepository.exclude(training);
 
             for(int i = 0; i < recipes.size(); i++) {
                 Recipe recipe = recipes.get(i);
-                add(recipe.getRecipe_training().getTraining_id(), recipe.getRecipe_exercise().getExercise_id(), recipe.getRecipe_weight(), recipe.getRecipe_reps(), recipe.getRecipe_sets());
+                add(recipe.getRecipeTraining().getTrainingId(), recipe.getRecipeExercise().getExerciseId(), recipe.getRecipeWeight(), recipe.getRecipeReps(), recipe.getRecipeSets());
             }
         }
 

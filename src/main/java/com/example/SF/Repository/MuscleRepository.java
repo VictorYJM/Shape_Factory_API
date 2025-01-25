@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 import java.util.UUID;
 
-public interface IMuscle extends JpaRepository<Muscle, UUID> {
+public interface MuscleRepository extends JpaRepository<Muscle, UUID> {
     @Query(value = "SELECT * FROM V_MuscleOrder", nativeQuery = true)
     List<Muscle> getAll();
 }

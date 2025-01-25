@@ -20,21 +20,21 @@ public class Adm {
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "adm_id", nullable = false)
     @JsonProperty("adm_id")
-    private UUID adm_id;
+    private UUID admId;
 
     @Column(name = "adm_email", nullable = false)
     @JsonProperty("adm_email")
-    private String adm_email;
+    private String admEmail;
 
     @Column(name = "adm_password", nullable = false)
     @JsonProperty("adm_password")
-    private String adm_password;
+    private String admPassword;
 
     @Column(name = "adm_salary", nullable = false)
     @JsonProperty("adm_salary")
-    private Double adm_salary;
+    private Double admSalary;
 
     @Column(name = "adm_active", nullable = false)
     @JsonProperty("adm_active")
-    private Boolean adm_active;
+    private Boolean admActive;
 }

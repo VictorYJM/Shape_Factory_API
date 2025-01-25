@@ -80,7 +80,7 @@ public class ClientController {
         try {
             LocalDate dateBirthday = LocalDate.parse(birthday, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
             Client client = clientService.add(name, email, dateBirthday, gender, weight, password);
-            return client.getClient_id();
+            return client.getClientId();
         }
 
         catch (Exception e) {

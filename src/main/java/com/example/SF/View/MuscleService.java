@@ -1,7 +1,7 @@
 package com.example.SF.View;
 
 import com.example.SF.Model.Muscle;
-import com.example.SF.Repository.IMuscle;
+import com.example.SF.Repository.MuscleRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,16 +11,16 @@ import java.util.UUID;
 
 @Service
 public class MuscleService {
-    private final IMuscle iMuscle;
+    private final MuscleRepository muscleRepository;
 
     @Autowired
-    public MuscleService(IMuscle iMuscle) {
-        this.iMuscle = iMuscle;
+    public MuscleService(MuscleRepository muscleRepository) {
+        this.muscleRepository = muscleRepository;
     }
 
     public List<Muscle> getAll() {
         try {
-            return iMuscle.getAll();
+            return muscleRepository.getAll();
         }
 
         catch (Exception e) {
@@ -30,16 +30,16 @@ public class MuscleService {
     }
 
     public Muscle getById(UUID id) {
-        return iMuscle.findById(id).orElse(null);
+        return muscleRepository.findById(id).orElse(null);
     }
 
     @Transactional
     public Muscle add(String name) {
         try {
             Muscle muscle = new Muscle();
-            muscle.setMuscle_name(name);
+            muscle.setMuscleName(name);
 
-            return iMuscle.save(muscle);
+            return muscleRepository.save(muscle);
         }
 
         catch (Exception e) {
@@ -51,7 +51,7 @@ public class MuscleService {
     @Transactional
     public void exclude(UUID id) {
         try {
-            iMuscle.deleteById(id);
+            muscleRepository.deleteById(id);
         }
 
         catch (Exception e) {

@@ -20,27 +20,27 @@ public class Recipe {
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "recipe_id", nullable = false)
     @JsonProperty("recipe_id")
-    private UUID recipe_id;
+    private UUID recipeId;
 
     @ManyToOne
     @JoinColumn(name = "recipe_training", referencedColumnName = "training_id", nullable = false)
     @JsonProperty("recipe_training")
-    private Training recipe_training;
+    private Training recipeTraining;
 
     @ManyToOne
     @JoinColumn(name = "recipe_exercise", referencedColumnName = "exercise_id", nullable = false)
     @JsonProperty("recipe_exercise")
-    private Exercise recipe_exercise;
+    private Exercise recipeExercise;
 
     @Column(name = "recipe_weight", nullable = true)
     @JsonProperty("recipe_weight")
-    private String recipe_weight;
+    private String recipeWeight;
 
     @Column(name = "recipe_reps", nullable = true)
     @JsonProperty("recipe_reps")
-    private String recipe_reps;
+    private String recipeReps;
 
     @Column(name = "recipe_sets", nullable = true)
     @JsonProperty("recipe_sets")
-    private Integer recipe_sets;
+    private Integer recipeSets;
 }

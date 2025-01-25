@@ -1,7 +1,7 @@
 package com.example.SF.View;
 
 import com.example.SF.Model.Client;
-import com.example.SF.Repository.IClient;
+import com.example.SF.Repository.ClientRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -13,16 +13,16 @@ import java.util.UUID;
 
 @Service
 public class ClientService {
-    private final IClient iClient;
+    private final ClientRepository clientRepository;
 
     @Autowired
-    public ClientService(IClient iClient) {
-        this.iClient = iClient;
+    public ClientService(ClientRepository clientRepository) {
+        this.clientRepository = clientRepository;
     }
 
     public List<Client> getAll() {
         try {
-            return iClient.getAll();
+            return clientRepository.getAll();
         }
 
         catch (Exception e) {
@@ -32,12 +32,12 @@ public class ClientService {
     }
 
     public Client getById(UUID id) {
-        return iClient.findById(id).orElse(null);
+        return clientRepository.findById(id).orElse(null);
     }
 
     public Client getByName(String name) {
         try {
-            return iClient.getByName(name);
+            return clientRepository.getByName(name);
         }
 
         catch (Exception e) {
@@ -48,7 +48,7 @@ public class ClientService {
 
     public Client getByEmail(String email) {
         try {
-            return iClient.getByEmail(email);
+            return clientRepository.getByEmail(email);
         }
 
         catch (Exception e) {
@@ -61,15 +61,15 @@ public class ClientService {
     public Client add(String name, String email, LocalDate birthday, Character gender, Double weight, String password) {
         try {
             Client client = new Client();
-            client.setClient_name(name);
-            client.setClient_email(email);
-            client.setClient_birthday(birthday);
-            client.setClient_gender(gender);
-            client.setClient_weight(weight);
-            client.setClient_password(password);
-            client.setClient_active(true);
+            client.setClientName(name);
+            client.setClientEmail(email);
+            client.setClientBirthday(birthday);
+            client.setClientGender(gender);
+            client.setClientWeight(weight);
+            client.setClientPassword(password);
+            client.setClientActive(true);
 
-            return iClient.save(client);
+            return clientRepository.save(client);
         }
 
         catch (DataIntegrityViolationException e) {
@@ -86,7 +86,7 @@ public class ClientService {
     @Transactional
     public void updateData(UUID id, Double weight) {
         try {
-            iClient.updateData(id, weight);
+            clientRepository.updateData(id, weight);
         }
 
         catch (Exception e) {
@@ -97,7 +97,7 @@ public class ClientService {
     @Transactional
     public void updatePassword(UUID id, String password) {
         try {
-            iClient.updatePassword(id, password);
+            clientRepository.updatePassword(id, password);
         }
 
         catch (Exception e) {
@@ -108,7 +108,7 @@ public class ClientService {
     @Transactional
     public void exclude(UUID id) {
         try {
-            iClient.exclude(id);
+            clientRepository.exclude(id);
         }
 
         catch (Exception e) {

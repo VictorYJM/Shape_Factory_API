@@ -21,31 +21,31 @@ public class History {
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "history_id", nullable = false)
     @JsonProperty("history_id")
-    private UUID history_id;
+    private UUID historyId;
 
     @ManyToOne
     @JoinColumn(name = "history_client", referencedColumnName = "client_id", nullable = false)
     @JsonProperty("history_client")
-    private Client history_client;
+    private Client historyClient;
 
     @ManyToOne
     @JoinColumn(name = "history_exercise", referencedColumnName = "exercise_id", nullable = false)
     @JsonProperty("history_exercise")
-    private Exercise history_exercise;
+    private Exercise historyExercise;
 
     @Column(name = "history_weight", nullable = true)
     @JsonProperty("history_weight")
-    private String history_weight;
+    private String historyWeight;
 
     @Column(name = "history_reps", nullable = true)
     @JsonProperty("history_reps")
-    private String history_reps;
+    private String historyReps;
 
     @Column(name = "history_sets", nullable = true)
     @JsonProperty("history_sets")
-    private Integer history_sets;
+    private Integer historySets;
 
     @Column(name = "history_date", nullable = true)
     @JsonProperty("history_date")
-    private LocalDate history_date;
+    private LocalDate historyDate;
 }

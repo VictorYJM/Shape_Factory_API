@@ -21,33 +21,33 @@ public class Client {
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "client_id", nullable = false)
     @JsonProperty("client_id")
-    private UUID client_id;
+    private UUID clientId;
 
     @Column(name = "client_name", nullable = false)
     @JsonProperty("client_name")
-    private String client_name;
+    private String clientName;
 
     @Column(name = "client_email", nullable = false)
     @JsonProperty("client_email")
-    private String client_email;
+    private String clientEmail;
 
     @Column(name = "client_birthday", nullable = false)
     @JsonProperty("client_birthday")
-    private LocalDate client_birthday;
+    private LocalDate clientBirthday;
 
     @Column(name = "client_gender", nullable = false)
     @JsonProperty("client_gender")
-    private Character client_gender;
+    private Character clientGender;
 
     @Column(name = "client_weight", nullable = false)
     @JsonProperty("client_weight")
-    private Double client_weight;
+    private Double clientWeight;
 
     @Column(name = "client_password", nullable = false)
     @JsonProperty("client_password")
-    private String client_password;
+    private String clientPassword;
 
     @Column(name = "client_active", nullable = false)
     @JsonProperty("client_active")
-    private Boolean client_active;
+    private Boolean clientActive;
 }

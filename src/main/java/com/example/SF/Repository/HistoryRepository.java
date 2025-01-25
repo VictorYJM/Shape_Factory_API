@@ -9,7 +9,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
-public interface IHistory extends JpaRepository<History, UUID> {
+public interface HistoryRepository extends JpaRepository<History, UUID> {
     @Query(value = "SELECT * FROM SF.GET_HistoryByClient(:client)", nativeQuery = true)
     List<History> getByClientNoDate(@Param("client") UUID client);
 

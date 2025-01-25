@@ -9,7 +9,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 import java.util.UUID;
 
-public interface IClient extends JpaRepository<Client, UUID> {
+public interface ClientRepository extends JpaRepository<Client, UUID> {
     @Query(value = "SELECT * FROM V_ClientOrder", nativeQuery = true)
     List<Client> getAll();
 
@@ -20,20 +20,20 @@ public interface IClient extends JpaRepository<Client, UUID> {
     Client getByEmail(@Param("email") String email);
 
     @Modifying
-    @Query("UPDATE Client SET client_weight = :weight WHERE client_id = :id")
+    @Query("UPDATE Client SET clientWeight = :weight WHERE clientId = :id")
     void updateData(
             @Param("id") UUID id,
             @Param("weight") Double weight
     );
 
     @Modifying
-    @Query("UPDATE Client SET client_password = :password WHERE client_id = :id")
+    @Query("UPDATE Client SET clientPassword = :password WHERE clientId = :id")
     void updatePassword(
             @Param("id") UUID id,
             @Param("password") String password
     );
 
     @Modifying
-    @Query("UPDATE Client SET client_active = FALSE WHERE client_id = :id")
+    @Query("UPDATE Client SET clientActive = FALSE WHERE clientId = :id")
     void exclude(@Param("id") UUID id);
 }

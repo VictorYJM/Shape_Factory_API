@@ -9,7 +9,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 import java.util.UUID;
 
-public interface IAdm extends JpaRepository<Adm, UUID> {
+public interface AdmRepository extends JpaRepository<Adm, UUID> {
     @Query(value = "SELECT * FROM V_AdmOrder", nativeQuery = true)
     List<Adm> getAll();
 
@@ -20,20 +20,20 @@ public interface IAdm extends JpaRepository<Adm, UUID> {
     );
 
     @Modifying
-    @Query("UPDATE Adm SET adm_salary = :salary WHERE adm_id = :id")
+    @Query("UPDATE Adm SET admSalary = :salary WHERE admId = :id")
     void updateSalary(
             @Param("id") UUID id,
             @Param("salary") Double salary
     );
 
     @Modifying
-    @Query("UPDATE Adm SET adm_password = :password WHERE adm_id = :id")
+    @Query("UPDATE Adm SET admPassword = :password WHERE admId = :id")
     void updatePassword(
             @Param("id") UUID id,
             @Param("password") String password
     );
 
     @Modifying
-    @Query("UPDATE Adm SET adm_active = FALSE WHERE adm_id = :id")
+    @Query("UPDATE Adm SET admActive = FALSE WHERE admId = :id")
     void exclude(@Param("id") UUID id);
 }

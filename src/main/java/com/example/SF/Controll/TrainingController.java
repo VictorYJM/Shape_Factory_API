@@ -58,7 +58,7 @@ public class TrainingController {
     public UUID add(@RequestParam("name") String name, @RequestParam("category") Integer category, @RequestParam("clientId") UUID clientId) {
         try {
             Training training = trainingService.add(name, category, clientId);
-            return training.getTraining_id();
+            return training.getTrainingId();
         }
 
         catch (Exception e) {

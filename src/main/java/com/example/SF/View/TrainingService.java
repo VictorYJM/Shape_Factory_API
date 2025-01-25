@@ -2,7 +2,7 @@ package com.example.SF.View;
 
 import com.example.SF.Model.Client;
 import com.example.SF.Model.Training;
-import com.example.SF.Repository.ITraining;
+import com.example.SF.Repository.TrainingRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,18 +12,18 @@ import java.util.UUID;
 
 @Service
 public class TrainingService {
-    private final ITraining iTraining;
+    private final TrainingRepository trainingRepository;
     private final ClientService clientService;
 
     @Autowired
-    public TrainingService(ITraining iTraining, ClientService clientService) {
-        this.iTraining = iTraining;
+    public TrainingService(TrainingRepository trainingRepository, ClientService clientService) {
+        this.trainingRepository = trainingRepository;
         this.clientService = clientService;
     }
 
     public List<Training> getAll() {
         try {
-            return iTraining.getAll();
+            return trainingRepository.getAll();
         }
 
         catch (Exception e) {
@@ -33,12 +33,12 @@ public class TrainingService {
     }
 
     public Training getById(UUID id) {
-        return iTraining.findById(id).orElse(null);
+        return trainingRepository.findById(id).orElse(null);
     }
 
     public List<Training> getByClient(UUID clientId) {
         try {
-            return iTraining.getByClient(clientId);
+            return trainingRepository.getByClient(clientId);
         }
 
         catch (Exception e) {
@@ -49,7 +49,7 @@ public class TrainingService {
 
     public List<Training> getByCategory(UUID clientId, Integer category) {
         try {
-            return iTraining.getByCategory(clientId, category);
+            return trainingRepository.getByCategory(clientId, category);
         }
 
         catch (Exception e) {
@@ -62,8 +62,8 @@ public class TrainingService {
     public Training add(String name, Integer category, UUID clientId) {
         try {
             Training training = new Training();
-            training.setTraining_name(name);
-            training.setTraining_category(category);
+            training.setTrainingName(name);
+            training.setTrainingCategory(category);
 
             Client client = clientService.getById(clientId);
             if (client == null) {
@@ -71,8 +71,8 @@ public class TrainingService {
                 return null;
             }
 
-            training.setTraining_client(client);
-            return iTraining.save(training);
+            training.setTrainingClient(client);
+            return trainingRepository.save(training);
         }
 
         catch (Exception e) {
@@ -84,7 +84,7 @@ public class TrainingService {
     @Transactional
     public void update(UUID id, String name) {
         try {
-            iTraining.update(id, name);
+            trainingRepository.update(id, name);
         }
 
         catch (Exception e) {
@@ -95,7 +95,7 @@ public class TrainingService {
     @Transactional
     public void exclude(UUID id) {
         try {
-            iTraining.exclude(id);
+            trainingRepository.exclude(id);
         }
 
         catch (Exception e) {
